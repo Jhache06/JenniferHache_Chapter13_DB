@@ -1,0 +1,117 @@
+
+Technical Design Document Template
+Name: Jennifer Hache
+Date Created: 11/27/24
+
+Program Description: SQLite database to track the population of cities in Florida.
+Its initial start population is for 2023, then the population grows at a 2% annual rate over the next 20 years. The user can request which population growth to view for any city in the database, and it will display a plot showing the city's population over time.
+
+
+Functions used in the Program (list in order as they are called):
+1. Function Name: population_JH(db_name)
+Description: Creates a population table. Creates SQLite database and connects to it.
+
+Parameters: db_name – string
+Name of the SQLite database
+A tuple containing the database connection and the cursor.
+
+Variables: 
+conn: The SQLite connection object 
+cursor: The SQLite cursor object 
+Logical Steps: 
+1.	Create a connection to the SQLite database.
+2.	Create a cursor object with conn.cursor().
+3.	Create the population table using cursor.execute().
+4.	Return the connection and cursor.
+Returns: none.
+
+2. Function Name: florida_cities(cursor)
+Description: initial population data for various Florida cities for the year 2023.
+Parameters: cursor
+The cursor object
+
+Variables:
+cities: tuple contains a city name, year, and population for the cities.
+city: A variable representing each i city in a list.
+year: The year of the data.
+population: The population of the city for the year 2023. 
+
+Logical Steps:
+1.	Delete existing records from the population table using cursor.execute to avoid duplicates.
+2.	Iterate over the cities list to insert data for each city. (city name, year, and population).
+3.	Insert each city’s info into the population table using cursor.execute() for each city.
+
+Returns: none
+
+3. Function Name: population_growth_rate(cursor)
+Description: simulation of population growth at a 2% annual rate for the next 20 years.
+Parameters: cursor
+The cursor object 
+
+Variables: 
+data: tuples(city name and its population) grabbed from the database.
+city: city name.
+initial_population: The population of the city in 2023.
+new_population: The calculated population for a given year using the 2% annual growth rate.
+
+Logical Steps: 
+1.	Get the current population of all cities using cursor.execute.
+2.	Iterate through the cities and their populations to calculate the population for the next 20 years.
+3.	Apply a 2% growth rate for each year.
+4.	Insert the new population values for each city and year into the database using cursor.execute().
+
+Returns: none.
+
+4. Function Name: population_growth(cursor)
+Description: Allows the user to view population growth for a selected Florida city. Displays a list of cities and it grabs population data for that city and plots it over time using matplotlib. 
+Parameters: cursor
+The cursor object 
+
+Variables: 
+cities: city names.
+entered_input: The user’s input. They can either the number of a city or "quit".
+city_number: the city from the list in numeric form.
+selected_city: The lowercase name of the city selected by the user – to avoid errors.
+original_city: The case-sensitive version of the selected city name.
+data: tuples(city name and its population) grabbed from the database.
+years: A list of years.
+populations: A list of the populations.
+Logical Steps: 
+1.	Get the list of cities from the population table using cursor.execute.
+2.	Convert city names to lowercase and display them in a numbered list. To avoid errors.
+3.	Ask the user to enter a city number or "quit" to exit.
+4.	If the user selects a valid number, get the city name they need.
+5.	Get the population data for the selected city using cursor.execute() to retrieve the population for each year.
+6.	Plot the population data over time using matplotlib.
+7.	If the user enters an invalid city number or city name, display an error message, asking user to try again.
+
+Return: none
+
+5. Function Name: main() – the main driver.
+Description: database, table, initial data and simulates population growth. Prompts the user to view population growth for a selected city in Florida.
+Parameters: none
+
+Variables:
+db_name: The name of the SQLite file.
+conn: The connection object to the SQLite database.
+cursor: The cursor object.
+
+Logical Steps: 
+1.	Set the database name.
+2.	Call population_JH(db_name) to create a connection to the database and set up the table.
+3.	Call florida_cities(cursor) to insert initial data for Florida cities created.
+4.	Call population_growth_rate(cursor) to create a simulation of the population growth over 20 years.
+5.	Commit the changes to the database using conn.commit().
+6.	Call population_growth(cursor) to allow the user to view population growth and plot data.
+7.	Close the database connection with conn.close().
+
+Returns: none.
+
+
+
+
+Link to your repository: www.yourrepository.com
+https://github.com/Jhache06/JenniferHache_Chapter13_DB.git
+
+
+
